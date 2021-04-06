@@ -1,1 +1,3 @@
-# PlasmaPINNs
+# Uncovering turbulent plasma dynamics via deep learning from partial observations
+
+One of the most intensely studied aspects of magnetic confinement fusion is edge plasma turbulence which is critical to reactor performance and operation. Drift-reduced Braginskii two-fluid theory has for decades been widely applied to model boundary plasmas with varying success. Towards better understanding edge turbulence in both theory and experiment, we demonstrate that physics-informed neural networks constrained by partial differential equations can accurately learn turbulent fields consistent with the two-fluid theory from just partial observations of a synthetic plasma’s electron density and temperature in contrast with conventional equilibrium models. These techniques present a novel paradigm for the advanced design of plasma diagnostics and validation of magnetized plasma turbulence theories in challenging thermonuclear environments. 
