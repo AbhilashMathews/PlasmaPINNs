@@ -5,10 +5,16 @@ One of the most intensely studied aspects of magnetic confinement fusion is edge
 If you find this code useful, please remember to cite it: https://arxiv.org/abs/2009.05005
 
       @misc{mathews2021uncovering,
-            title={Uncovering turbulent plasma dynamics via deep learning from partial observations}, 
-            author={Abhilash Mathews and Manaure Francisquez and Jerry Hughes and David Hatch and Ben Zhu and Barrett Rogers},
-            year={2021},
-            eprint={2009.05005},
-            archivePrefix={arXiv},
-            primaryClass={physics.plasm-ph}
+      title = {Uncovering turbulent plasma dynamics via deep learning from partial observations},
+      author = {Mathews, A. and Francisquez, M. and Hughes, J. W. and Hatch, D. R. and Zhu, B. and Rogers, B. N.},
+      journal = {Phys. Rev. E},
+      volume = {104},
+      issue = {2},
+      pages = {025205},
+      numpages = {11},
+      year = {2021},
+      month = {Aug},
+      publisher = {American Physical Society},
+      doi = {10.1103/PhysRevE.104.025205},
+      url = {https://link.aps.org/doi/10.1103/PhysRevE.104.025205}
       }
