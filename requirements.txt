@@ -1,0 +1,12 @@
+numpy==1.19.5
+tensorflow==2.3.0
+h5py==2.10.0
+matplotlib==3.3.4
+typing-extensions==3.7.4.3
+scipy==1.5.4
+pandas==1.1.5
+scikit-learn==0.24.2
+tqdm==4.64.1
+pytest==6.2.5  # for testing
+black==22.3.0  # for code formatting
+pylint==2.8.2  # for code linting
