@@ -268,14 +268,7 @@ class PINN:
     
     # Utility methods
     def initialize_NN(self, layers: List[int]) -> Tuple[List[tf.Variable], List[tf.Variable]]:
-        """Initialize neural network weights and biases.
-        
-        Args:
-            layers: List of layer sizes
-            
-        Returns:
-            Tuple of weights and biases lists
-        """
+        """Initialize neural network weights and biases."""
         weights = []
         biases = []
         num_layers = len(layers)
