@@ -167,24 +167,27 @@ class PINN:
 
     def compute_source_terms(self, x, v1, v5):
         """Compute source terms with conditions."""
+        # Get dynamic batch size from input tensor
+        batch_size = tf.shape(x)[0]
+        
         S_n = N_SRC_A*tf.exp(-(x - X_SRC)*(x - X_SRC)/(2.*SIG_SRC**2))
         S_Ee = ENER_SRC_A*tf.exp(-(x - X_SRC)*(x - X_SRC)/(2.*SIG_SRC**2))
 
-        # Apply source term conditions
-        cond1Sn = tf.greater(S_n[:,0], 0.01*tf.ones(SAMPLE_BATCH_SIZE))
-        S_n = tf.where(cond1Sn, S_n[:,0], 0.001*tf.ones(SAMPLE_BATCH_SIZE))
-        cond1SEe = tf.greater(S_Ee[:,0], 0.01*tf.ones(SAMPLE_BATCH_SIZE))
-        S_Ee = tf.where(cond1SEe, S_Ee[:,0], 0.001*tf.ones(SAMPLE_BATCH_SIZE))
+        # Apply source term conditions using dynamic batch size
+        cond1Sn = tf.greater(S_n[:,0], 0.01*tf.ones(batch_size))
+        S_n = tf.where(cond1Sn, S_n[:,0], 0.001*tf.ones(batch_size))
+        cond1SEe = tf.greater(S_Ee[:,0], 0.01*tf.ones(batch_size))
+        S_Ee = tf.where(cond1SEe, S_Ee[:,0], 0.001*tf.ones(batch_size))
         
-        cond2Sn = tf.greater(x, X_SRC*tf.ones(SAMPLE_BATCH_SIZE))
-        S_n = tf.where(cond2Sn[:,0], S_n, 0.5*tf.ones(SAMPLE_BATCH_SIZE))
-        cond2SEe = tf.greater(x, X_SRC*tf.ones(SAMPLE_BATCH_SIZE))
-        S_Ee = tf.where(cond2SEe[:,0], S_Ee, 0.5*tf.ones(SAMPLE_BATCH_SIZE))
+        cond2Sn = tf.greater(x, X_SRC*tf.ones(batch_size))
+        S_n = tf.where(cond2Sn[:,0], S_n, 0.5*tf.ones(batch_size))
+        cond2SEe = tf.greater(x, X_SRC*tf.ones(batch_size))
+        S_Ee = tf.where(cond2SEe[:,0], S_Ee, 0.5*tf.ones(batch_size))
         
-        cond4Sn = tf.greater(v1[:,0], 5.0*tf.ones(SAMPLE_BATCH_SIZE))
-        S_n = tf.where(cond4Sn, 0.0*tf.ones(SAMPLE_BATCH_SIZE), S_n)
-        cond4SEe = tf.greater(v5[:,0], 1.0*tf.ones(SAMPLE_BATCH_SIZE))
-        S_Ee = tf.where(cond4SEe, 0.0*tf.ones(SAMPLE_BATCH_SIZE), S_Ee)
+        cond4Sn = tf.greater(v1[:,0], 5.0*tf.ones(batch_size))
+        S_n = tf.where(cond4Sn, 0.0*tf.ones(batch_size), S_n)
+        cond4SEe = tf.greater(v5[:,0], 1.0*tf.ones(batch_size))
+        S_Ee = tf.where(cond4SEe, 0.0*tf.ones(batch_size), S_Ee)
 
         return S_n, S_Ee
 
@@ -379,10 +382,19 @@ class PINN:
         self.saver.restore(self.sess, checkpoint_path)
         
         # Load metadata
-        metadata = np.load(os.path.join(load_path, 'metadata.npz'), allow_pickle=True)
-        self.layers = metadata['layers'].item()
-        self.use_pde = metadata['use_pde'].item()
+        metadata = dict(np.load(os.path.join(load_path, 'metadata.npz'), allow_pickle=True))
+        
+        # Process metadata fields with proper type conversion
+        if isinstance(metadata['layers'], np.ndarray):
+            if metadata['layers'].dtype == np.dtype('O'):
+                self.layers = metadata['layers'].item()
+            else:
+                self.layers = metadata['layers'].tolist()
+        else:
+            self.layers = metadata['layers']
+            
+        self.use_pde = bool(metadata['use_pde'].item() if isinstance(metadata['use_pde'], np.ndarray) else metadata['use_pde'])
         self.lb = metadata['lb']
         self.ub = metadata['ub']
-        self.diff_norms = metadata['diff_norms'].item()
-        self.loss_history = metadata['loss_history'].item()
+        self.diff_norms = metadata['diff_norms'].item() if isinstance(metadata['diff_norms'], np.ndarray) else metadata['diff_norms']
+        self.loss_history = metadata['loss_history'].item() if isinstance(metadata['loss_history'], np.ndarray) else metadata['loss_history']

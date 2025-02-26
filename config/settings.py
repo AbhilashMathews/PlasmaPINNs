@@ -16,7 +16,7 @@ N_OUTPUTS = 1
 
 # Training hyperparameters
 TRAINING_HOURS = 20.0
-STEPS_PER_HOUR = 10000
+STEPS_PER_HOUR = 1000
 TOTAL_EPOCHS = int(TRAINING_HOURS * STEPS_PER_HOUR)
 SAMPLE_BATCH_SIZE = 500
 TRAIN_FRACTION = 1.0
@@ -25,7 +25,8 @@ TRAIN_FRACTION = 1.0
 INIT_WEIGHT_DEN = 1.0  # Initial weight for density terms
 INIT_WEIGHT_TE = 1.0   # Initial weight for temperature terms
 
-# Plotting/saving settings
+# Plotting settings
+SCATTER_POINT_SIZE = 2.5  # Size of scatter plot points
 PLOT_FREQUENCY = 100    # Number of iterations between plots
 SAVE_FREQUENCY = 1000   # Number of iterations between saves
 

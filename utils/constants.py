@@ -29,15 +29,9 @@ PLASMA_DENSITY = 5e19                  # m^-3 (n0)
 
 # Magnetic field
 def compute_magnetic_field(radius: float) -> float:
-    """Compute magnetic field strength at given radius.
-    
-    Args:
-        radius: Radial position in meters
-    Returns:
-        Magnetic field strength in Tesla
-    """
+    """Compute magnetic field strength at given radius."""
     center_field = (B_FIELD * MAJOR_RADIUS)/(MAJOR_RADIUS + MINOR_RADIUS)
-    return center_field * (MAJOR_RADIUS + MINOR_RADIUS)/radius
+    return center_field
 
 # Derived plasma parameters
 ELECTRON_THERMAL_SPEED = np.sqrt(ELECTRON_CHARGE * ELECTRON_TEMP / ION_MASS)  # m/s (previously cse0)
